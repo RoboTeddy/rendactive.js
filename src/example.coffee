@@ -1,10 +1,10 @@
-template = _.template($("#flickr_template").text())
+template = _.template($('#flickr_template').text())
 
 ui = rendactive template, (createStream) ->
-  nexts = createStream("click .next-page")
-  prevs = createStream("click .prev-page")
+  nexts = createStream('click .next-page')
+  prevs = createStream('click .prev-page')
   pageFlips = nexts.map(1).merge(prevs.map(-1))
-  query = createStream("keyup input")
+  query = createStream('keyup input')
     .map((e) -> $(e.target).val())
     .skipDuplicates()
     .toProperty('')
@@ -20,7 +20,7 @@ ui = rendactive template, (createStream) ->
     .filter(({page, query}) -> query.length)
 
   results = searches.throttle(200).log().flatMapLatest ({page, query}) ->
-    Bacon.fromPromise $.get "http://api.flickr.com/services/rest/",
+    Bacon.fromPromise $.get 'http://api.flickr.com/services/rest/',
       method: 'flickr.photos.search'
       format: 'json'
       nojsoncallback: 1
