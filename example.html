@@ -7,9 +7,11 @@
   <script id="flickr_template" type="text/x-template">
     <h1>Flickr Tag Search</h1>
     <input type="text" name="query" />
+
     <% if (isLoading) { %>
       loading...
     <% } %>
+
     <% if (photos) { %>
       <div>
         <button class="prev-page" name="prev">prev</button>
@@ -17,14 +19,14 @@
         Page: <%= page %>
       </div>
     <% } %>
-    <div>
-      <% _.each(photos, function(photo) { %>
-        <img src="<%= getPhotoUrl(photo) %>" width=150 height=150>
-      <% }) %>
-      <% if (photos !== null && !photos.length) { %>
-        No results
-      <% } %>
-    </div>
+
+    <% _.each(photos, function(photo) { %>
+      <img src="<%= getPhotoUrl(photo) %>" width=150 height=150>
+    <% }) %>
+
+    <% if (photos !== null && !photos.length) { %>
+      No results
+    <% } %>
   </script>
 </head>
 
