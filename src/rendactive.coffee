@@ -13,7 +13,8 @@
   fragment = Spark.render ->
     html = Spark.isolate ->
       ctx = Meteor.deps.Context.current
-      data.changes().take(1).onValue -> ctx.invalidate()
+      stop = data.changes().onValue -> ctx.invalidate()
+      ctx.onInvalidate stop
       return template(latestData)
     return Spark.attachEvents(eventMap, html)
 
