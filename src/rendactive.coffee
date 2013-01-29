@@ -8,14 +8,16 @@
   dataTemplate = createDataTemplate(createStream)
   latestData = null
   data = Bacon.combineTemplate(dataTemplate)
-  data.onValue (v) -> latestData = v
+  unsubscribe = data.onValue (v) -> latestData = v
 
+  mark = null
   fragment = Spark.render ->
-    html = Spark.isolate ->
-      ctx = Meteor.deps.Context.current
-      stop = data.changes().onValue -> ctx.invalidate()
-      ctx.onInvalidate stop
-      return template(latestData)
-    return Spark.attachEvents(eventMap, html)
+    Spark.createLandmark {destroyed: unsubscribe, created: -> mark = this}, ->
+      html = Spark.isolate ->
+        ctx = Meteor.deps.Context.current
+        ctx.onInvalidate data.changes().onValue -> ctx.invalidate()
+        template(latestData)
+      Spark.attachEvents(eventMap, html)
 
-  {fragment, dataTemplate}
+  destroy = -> mark and Spark.finalize(mark.firstNode(), mark.lastNode())
+  {fragment, dataTemplate, destroy}
