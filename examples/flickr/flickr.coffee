@@ -1,13 +1,10 @@
-template = _.template($('#flickr_template').text())
+template = _.template($('#flickr_template').html())
 
-ui = rendactive template, (createStream) ->
-  nexts = createStream('click .next-page')
-  prevs = createStream('click .prev-page')
+view = rendactive template, (h) ->
+  nexts = h.events('click .next-page')
+  prevs = h.events('click .prev-page')
   pageFlips = nexts.map(1).merge(prevs.map(-1))
-  query = createStream('keyup input')
-    .map((e) -> $(e.target).val())
-    .skipDuplicates()
-    .toProperty('')
+  query = h.inputValue('input').skipDuplicates()
 
   firstPage = 1
   # when the query changes, we begin again at the first page
@@ -45,5 +42,5 @@ ui = rendactive template, (createStream) ->
 
   {photos, page, isLoading, getPhotoUrl}
 
-$('body').append(ui.fragment)
+$('body').append(view.fragment)
 $('input').focus()

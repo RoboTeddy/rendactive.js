@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Rendactive • TodoMVC</title>
+  <link rel="stylesheet" href="assets/base.css">
+  <!--[if IE]>
+  <script src="https://github.com/addyosmani/todomvc/blob/gh-pages/assets/ie.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <script id='app' type="text/x-handlebars-template">
+    <section id="todoapp">
+      <header id="header">
+        <h1>todos</h1>
+        <input id="new-todo" placeholder="What needs to be done?" autofocus>
+      </header>
+      {{#if allTodos}}
+        <section id="main">
+          <input id="toggle-all" type="checkbox">
+          <label for="toggle-all">Mark all as complete</label>
+          <ul id="todo-list">
+            {{#each selectedTodos}}
+                <li class="{{#if completed}}completed{{/if}}
+                    {{#if_eq ../editingId compare=id}}editing{{/if_eq}}"
+                    data-id="{{id}}">
+                  <div class="view">
+                    <input class="toggle" type="checkbox" id="toggle-{{id}}"
+                        data-action="toggle" data-id="{{id}}"
+                        {{#if completed}}checked{{/if}}>
+                    <label data-id="{{id}}">{{title}}</label>
+                    <button class="destroy" data-action="delete"
+                        data-id="{{id}}"></button>
+                  </div>
+                  <input class="edit" value="{{title}}" id="edit-{{id}}"
+                    data-id="{{id}}">
+                </li>
+            {{/each}}
+          </ul>
+        </section>
+      {{/if}}
+      {{#if allTodos}}
+        <footer id="footer">
+          <!-- This should be `0 items left` by default -->
+          <!-- should pluralize correctly -->
+          <span id="todo-count"><strong>{{activeTodos.length}}</strong> item left</span>
+          <ul id="filters">
+            <li>
+              <a {{#if_eq selectedTodos compare=allTodos}}class="selected"{{/if_eq}} href="#/">All</a>
+            </li>
+            <li>
+              <a {{#if_eq selectedTodos compare=activeTodos}}class="selected"{{/if_eq}} href="#/active">Active</a>
+            </li>
+            <li>
+              <a {{#if_eq selectedTodos compare=completedTodos}}class="selected"{{/if_eq}} href="#/completed">Completed</a>
+            </li>
+          </ul>
+          {{#if completedTodos}}
+            <button id="clear-completed">
+              Clear completed ({{completedTodos.length}})
+            </button>
+          {{/if}}
+        </footer>
+      {{/if}}
+    </section>
+    <footer id="info">
+      <p>Double-click to edit a todo</p>
+      <p>Created by <a href="http://ted.suzman.net">Ted Suzman</a></p>
+      <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+  </script>
+  <script src="../lib/jquery.js"></script>
+  <script src="../../lib/Bacon.js"></script>
+  <script src="../../lib/underscore.js"></script>
+  <script src="../../lib/spark-standalone.js"></script>
+  <script src="../../lib/spark-logging.js"></script>
+  <script src="../../lib/spark-utils.js"></script>
+  <script src="../../lib/spark-preserve-inputs.js"></script>
+  <script src="../../lib/rendactive.js"></script>
+  <script src="../lib/handlebars.js"></script>
+  <script src="../lib/Bacon.UI.js"></script> <!-- only for Bacon.UI.hash -->
+  <script src="assets/base.js"></script>
+  <script src="utils.js"></script>
+  <script src="todo.js"></script>
+</body>
+</html>
