@@ -9,9 +9,9 @@ view = rendactive template, (h) ->
   firstPage = 1
   # when the query changes, we begin again at the first page
   page = query.flatMapLatest ->
-      pageFlips.scan(firstPage, (x, y) -> Math.max(firstPage, x + y))
-    .skipDuplicates()
-    .toProperty(firstPage)
+    pageFlips.scan(firstPage, (x, y) -> Math.max(firstPage, x + y))
+      .skipDuplicates()
+      .toProperty(firstPage)
 
   searches = Bacon.combineTemplate({page, query})
     .filter(({page, query}) -> query.length)
@@ -31,10 +31,7 @@ view = rendactive template, (h) ->
     .merge(query.filter((q) -> q is '').map(null))
     .toProperty(null)
 
-  isLoading = searches.map(true)
-    .changes()
-    .merge(results.map(false))
-    .toProperty(false)
+  isLoading = searches.awaiting(results)
 
   getPhotoUrl = (photo, size = 'q') ->
     host = "farm#{photo.farm}.staticflickr.com"
