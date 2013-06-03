@@ -46,7 +46,7 @@ createHandle = ->
       rendered: -> handle.renders.push this
       destroyed: ->
         unsubscribe()
-        handles.destroys.push this
+        handle.destroys.push this
 
     Spark.createLandmark landmarkOptions, ->
       html = Spark.isolate ->
